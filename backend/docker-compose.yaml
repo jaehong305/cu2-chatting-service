@@ -1,23 +1,23 @@
 version: '3.3'
 
 services:
-  my_backend:
+  cu2_backend:
     platform: linux/x86_64
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 3000:3000
+      - 4000:4000
     volumes:
-      - ./src:/my_backend/src
+      - ./src:/cu2_backend/src
     env_file:
       - ./.env
 
-  my_database:
+  cu2_database:
     platform: linux/x86_64
     image: mysql:latest
     environment:
-      MYSQL_DATABASE: 'myproject'
+      MYSQL_DATABASE: 'cu2'
       MYSQL_ROOT_PASSWORD: 'root'
       TZ: 'Asia/Seoul'
     command:
@@ -28,3 +28,9 @@ services:
       - SYS_NICE
     ports:
       - 3306:3306
+  
+  cu2_redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+
