@@ -1,9 +1,9 @@
 FROM node:14
 
-WORKDIR /my_backend/
-COPY ./package.json /my_backend/
-COPY ./yarn.lock /my_backend/
+WORKDIR /cu2_backend/
+COPY ./package.json /cu2_backend/
+COPY ./yarn.lock /cu2_backend/
 RUN yarn install
 
-COPY . /my_backend/
+COPY . /cu2_backend/
 CMD yarn start:dev
