@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { Button } from 'antd';
+import { IMyButtonProps } from './User.types';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -40,4 +42,9 @@ export const InfoBox = styled.div`
   & input {
     margin-bottom: 20px;
   }
+`;
+
+export const MyButton = styled(Button)`
+  background-color: ${(props: IMyButtonProps) => (props.isActive ? '#b956ab' : 'none')};
+  color: ${(props: IMyButtonProps) => props.isActive && '#fff'};
 `;

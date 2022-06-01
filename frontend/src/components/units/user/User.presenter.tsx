@@ -1,41 +1,64 @@
 import * as S from './User.styles';
+import { Input, Image, Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { Input, Upload, Button, message, Image } from 'antd';
-import type { UploadProps } from 'antd';
 
-const props: UploadProps = {
-  beforeUpload: (file) => {
-    const isPNGJPG = ['image/png', 'image/jpeg', 'image/jpg'].includes(file.type);
-    if (!isPNGJPG) {
-      message.error(`png 또는 jpg 형식의 파일만 업로드 가능합니다.`);
-    }
-    return isPNGJPG || Upload.LIST_IGNORE;
-  },
-  onChange: (info) => {
-    console.log(info.fileList);
-  },
-  multiple: false,
-  maxCount: 1,
-};
-
-export default function UserUI({ isEdit }) {
+export default function UserUI({
+  isEdit,
+  fileRef,
+  onClickImage,
+  onUpdateFile,
+  onChangeFile,
+  imageURL,
+  onChangeNickname,
+  onClickSubmit,
+  isActive,
+  data,
+  email,
+}) {
   return (
     <S.Wrapper>
       <S.UserBox>
         <S.ProfileImage>
-          <Image width={150} height={150} src="/image/null.png" />
-          <Upload {...props}>
-            <Button style={{ marginTop: '10px' }} icon={<UploadOutlined />}>
-              프로필사진
-            </Button>
-          </Upload>
+          {imageURL ? (
+            <Image width={150} height={150} src={`https://storage.googleapis.com/${imageURL}`} />
+          ) : (
+            <Image
+              width={150}
+              height={150}
+              src={
+                data
+                  ? `https://storage.googleapis.com/${data?.fetchUser?.image.replace(
+                      'thumb',
+                      'origin',
+                    )}`
+                  : '/image/null.png'
+              }
+            />
+          )}
+          <Button icon={<UploadOutlined />} onClick={onClickImage} style={{ marginTop: '12px' }}>
+            프로필 이미지
+          </Button>
+          <input
+            type="file"
+            ref={fileRef}
+            style={{ display: 'none' }}
+            accept="image/*"
+            onChange={isEdit ? onUpdateFile : onChangeFile}
+          />
         </S.ProfileImage>
         <S.InfoBox>
           <div>이메일</div>
-          <Input readOnly defaultValue={'aaa@aaa.com'} />
+          <Input readOnly value={email} />
           <div>닉네임</div>
-          <Input defaultValue={'aa'} />
-          <Button size={'small'}>{isEdit ? '수정' : '등록'}</Button>
+          <Input onChange={onChangeNickname} defaultValue={data?.fetchUser?.nickname} />
+          <S.MyButton
+            size={'small'}
+            onClick={onClickSubmit}
+            isActive={!isEdit && isActive}
+            disabled={!isEdit && !isActive}
+          >
+            {isEdit ? '정보수정' : '회원가입'}
+          </S.MyButton>
         </S.InfoBox>
       </S.UserBox>
     </S.Wrapper>

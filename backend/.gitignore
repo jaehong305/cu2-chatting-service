@@ -1,4 +1,5 @@
 .env*
+cu2-gcp.json
 
 # compiled output
 /dist
