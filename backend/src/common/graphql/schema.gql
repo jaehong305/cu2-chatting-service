@@ -21,11 +21,17 @@ type Query {
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
   restoreAccessToken: String!
+  uploadFile(files: [Upload!]!): [String!]!
+  updateFile(files: [Upload!]!): [String!]!
+  createUser(createUserInput: CreateUserInput!): User!
 }
 
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
 input CreateUserInput {
+  email: String!
   nickname: String!
   image: String
 }

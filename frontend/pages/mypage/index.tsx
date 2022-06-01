@@ -1,5 +1,5 @@
-import UserUI from '../../src/components/units/user/User.presenter';
+import User from '../../src/components/units/user/User.container';
 
 export default function MyPage() {
-  return <UserUI isEdit={true} />;
+  return <User isEdit={true} />;
 }

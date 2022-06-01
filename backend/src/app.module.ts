@@ -13,6 +13,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { RedisClientOptions } from 'redis';
 import redisStore from 'cache-manager-redis-store';
+import { FileModule } from './apis/file/file.module';
 
 @Module({
   imports: [
@@ -45,11 +46,12 @@ import redisStore from 'cache-manager-redis-store';
       url: 'redis://cu2_redis:6379',
       isGlobal: true,
     }),
-    UserModule,
     AuthModule,
-    ServerModule,
     ChannelModule,
     DmModule,
+    FileModule,
+    ServerModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

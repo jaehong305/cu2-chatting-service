@@ -37,7 +37,6 @@ export class AuthService {
       const email = await this.cacheManager.get(`email:${req.user.email}`);
       if (!email) await this.cacheManager.set(`email:${req.user.email}`, 'email', { ttl: 60 * 60 });
 
-      console.log(email);
       res.setHeader('Set-Cookie', `email=${req.user.email}; path=/;`);
       res.redirect('http://localhost:3000/signup');
       return;

@@ -9,6 +9,7 @@ export const Wrapper = styled.div`
   align-items: center;
 `;
 export const ChattingWrapper = styled.div`
+  width: 100%;
   height: 640px;
   display: flex;
   position: relative;
@@ -110,17 +111,12 @@ export const ChattingContent = styled.div`
 `;
 
 export const ChattingSendBox = styled.div`
-  height: 124px;
+  padding: 20px;
   border-top: 1px solid #d6d7d9;
   background: #fafafa;
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 `;
 export const ChattingInputBox = styled.div`
   display: flex;
-  align-items: center;
 `;
 export const ChattingTextAreaBox = styled.div`
   border: 1px solid #aaa;
@@ -130,20 +126,10 @@ export const ChattingTextAreaBox = styled.div`
   background-color: #fff;
   margin-right: 10px;
 `;
-
 export const SendButton = styled(Button)`
   background-color: #b956ab;
   color: #fff;
   border-radius: 3px;
-`;
-export const ImageBox = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-export const ImageButton = styled(Button)`
-  color: #777;
-  font-size: 12px;
 `;
 
 export const DrawerUl = styled.ul`

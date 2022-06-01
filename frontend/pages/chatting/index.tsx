@@ -7,7 +7,6 @@ import {
   PlusOutlined,
   UserOutlined,
   UserAddOutlined,
-  CameraOutlined,
 } from '@ant-design/icons';
 import * as S from '../../src/components/units/chatting/Chatting.styles';
 
@@ -95,7 +94,7 @@ export default function ChattingPage() {
               <span
                 style={{
                   marginLeft: '5px',
-                  width: '155px',
+                  maxWidth: '155px',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                 }}
@@ -156,15 +155,6 @@ export default function ChattingPage() {
               </S.ChattingTextAreaBox>
               <S.SendButton size={'large'}>전송</S.SendButton>
             </S.ChattingInputBox>
-            <S.ImageBox>
-              <S.ImageButton size={'small'}>
-                <CameraOutlined />
-                사진첨부
-              </S.ImageButton>
-              <div style={{ width: '720px', overflow: 'auto' }}>
-                <span style={{ color: '#999', margin: '0px 5px' }}>sdsdsd.png</span>
-              </div>
-            </S.ImageBox>
           </S.ChattingSendBox>
         </S.ChattingBox>
 
