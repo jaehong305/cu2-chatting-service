@@ -19,3 +19,13 @@ export const UPLOAD_FILE = gql`
     uploadFile(files: $files)
   }
 `;
+
+export const FETCH_USER = gql`
+  query fetchUser {
+    fetchUser {
+      email
+      nickname
+      image
+    }
+  }
+`;

@@ -48,7 +48,7 @@ export class FileService {
 
     // 기존 이미지 스토리지 삭제
     if (user.image) {
-      await storage.file(user.image).delete();
+      await storage.file(user.image.replace(`${GCP_STORAGE_BUCKET}/`, '')).delete();
     }
 
     // 일단 먼저 다 받기
