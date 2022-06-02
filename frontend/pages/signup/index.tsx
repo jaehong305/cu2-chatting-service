@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import User from '../../src/components/units/user/User.container';
+import { UserContext } from '../mypage';
 
 export default function SignUpPage() {
   const [email, setEmail] = useState('');
@@ -9,9 +10,12 @@ export default function SignUpPage() {
       .split('; ')
       .filter((e) => e.includes('email='))[0]
       .replace('email=', '');
-
     setEmail(email);
   }, []);
 
-  return <User email={email} />;
+  return (
+    <UserContext.Provider value={{ email }}>
+      <User />;
+    </UserContext.Provider>
+  );
 }

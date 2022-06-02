@@ -1,23 +1,26 @@
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useContext, useRef, useState } from 'react';
+import { UserContext } from '../../../../pages/mypage';
 import { checkFileValidation } from '../../../commons/libraries/utils';
 import UserUI from './User.presenter';
-import { CREATE_USER, UPDATE_FILE, UPLOAD_FILE } from './User.queries';
+import { CREATE_USER, FETCH_USER, UPDATE_FILE, UPLOAD_FILE } from './User.queries';
 
-export default function User(props) {
+export default function User() {
   const [nickname, setNickname] = useState('');
   const [isActive, setIsActive] = useState(false);
   const [imageURL, setImageURL] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const { email } = useContext(UserContext);
   const [createUser] = useMutation(CREATE_USER);
   const [uploadFile] = useMutation(UPLOAD_FILE);
   const [updateFile] = useMutation(UPDATE_FILE);
+  const { data } = useQuery(FETCH_USER);
 
   const onChangeNickname = (event: ChangeEvent<HTMLInputElement>) => {
     setNickname(event.target.value);
-    nickname ? setIsActive(true) : setIsActive(false);
+    event.target.value ? setIsActive(true) : setIsActive(false);
   };
 
   const onClickImage = () => {
@@ -65,12 +68,13 @@ export default function User(props) {
       await createUser({
         variables: {
           createUserInput: {
-            email: props.email,
+            email,
             nickname,
+            image: imageURL,
           },
         },
       });
-      router.push('/');
+      router.push('/mypage');
     } catch (error) {
       alert(error.message);
     }
@@ -78,7 +82,6 @@ export default function User(props) {
 
   return (
     <UserUI
-      isEdit={props.isEdit}
       fileRef={fileRef}
       onClickImage={onClickImage}
       onUpdateFile={onUpdateFile}
@@ -87,8 +90,7 @@ export default function User(props) {
       onChangeNickname={onChangeNickname}
       onClickSubmit={onClickSubmit}
       isActive={isActive}
-      data={null}
-      email={props.email}
+      data={data}
     />
   );
 }

@@ -43,8 +43,3 @@ export const InfoBox = styled.div`
     margin-bottom: 20px;
   }
 `;
-
-export const MyButton = styled(Button)`
-  background-color: ${(props: IMyButtonProps) => (props.isActive ? '#b956ab' : 'none')};
-  color: ${(props: IMyButtonProps) => props.isActive && '#fff'};
-`;

@@ -1,33 +1,29 @@
 import * as S from './User.styles';
-import { Input, Image, Button } from 'antd';
+import { Image, Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import { useContext } from 'react';
+import { UserContext } from '../../../../pages/mypage';
 
-export default function UserUI({
-  isEdit,
-  fileRef,
-  onClickImage,
-  onUpdateFile,
-  onChangeFile,
-  imageURL,
-  onChangeNickname,
-  onClickSubmit,
-  isActive,
-  data,
-  email,
-}) {
+export default function UserUI(props) {
+  const { isEdit, email } = useContext(UserContext);
+
   return (
     <S.Wrapper>
       <S.UserBox>
         <S.ProfileImage>
-          {imageURL ? (
-            <Image width={150} height={150} src={`https://storage.googleapis.com/${imageURL}`} />
+          {props.imageURL ? (
+            <Image
+              width={150}
+              height={150}
+              src={`https://storage.googleapis.com/${props.imageURL}`}
+            />
           ) : (
             <Image
               width={150}
               height={150}
               src={
-                data
-                  ? `https://storage.googleapis.com/${data?.fetchUser?.image.replace(
+                props.data?.fetchUser.image
+                  ? `https://storage.googleapis.com/${props.data.fetchUser.image.replace(
                       'thumb',
                       'origin',
                     )}`
@@ -35,30 +31,32 @@ export default function UserUI({
               }
             />
           )}
-          <Button icon={<UploadOutlined />} onClick={onClickImage} style={{ marginTop: '12px' }}>
+          <Button
+            icon={<UploadOutlined />}
+            onClick={props.onClickImage}
+            style={{ marginTop: '12px' }}
+          >
             프로필 이미지
           </Button>
           <input
             type="file"
-            ref={fileRef}
+            ref={props.fileRef}
             style={{ display: 'none' }}
             accept="image/*"
-            onChange={isEdit ? onUpdateFile : onChangeFile}
+            onChange={isEdit ? props.onUpdateFile : props.onChangeFile}
           />
         </S.ProfileImage>
         <S.InfoBox>
           <div>이메일</div>
-          <Input readOnly value={email} />
+          <input readOnly value={props.data?.fetchUser?.email || email || ''} />
           <div>닉네임</div>
-          <Input onChange={onChangeNickname} defaultValue={data?.fetchUser?.nickname} />
-          <S.MyButton
-            size={'small'}
-            onClick={onClickSubmit}
-            isActive={!isEdit && isActive}
-            disabled={!isEdit && !isActive}
-          >
-            {isEdit ? '정보수정' : '회원가입'}
-          </S.MyButton>
+          <input
+            onChange={props.onChangeNickname}
+            defaultValue={props.data?.fetchUser?.nickname || ''}
+          />
+          <Button size={'small'} onClick={props.onClickSubmit} disabled={!props.isActive}>
+            {isEdit ? '닉네임 변경' : '회원가입'}
+          </Button>
         </S.InfoBox>
       </S.UserBox>
     </S.Wrapper>

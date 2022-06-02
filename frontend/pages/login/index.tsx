@@ -1,5 +1,9 @@
+import { gql, useMutation } from '@apollo/client';
 import styled from '@emotion/styled';
+import { Button, Modal } from 'antd';
 import { useRouter } from 'next/router';
+import { useContext } from 'react';
+import { GlobalContext } from '../_app';
 
 const Wrapper = styled.div`
   display: flex;
@@ -43,8 +47,16 @@ const SocialLoginImg = styled.img`
   cursor: pointer;
 `;
 
+const LOGIN = gql`
+  mutation login($email: String!, $password: String!) {
+    login(email: $email, password: $password)
+  }
+`;
+
 export default function SocialLoginPage() {
   const router = useRouter();
+  const [login] = useMutation(LOGIN);
+  const { setAccessToken } = useContext(GlobalContext);
 
   const onClickNaverLogin = async () => {
     router.push('http://localhost:4000/login/naver');
@@ -54,6 +66,23 @@ export default function SocialLoginPage() {
   };
   const onClickKakaoLogin = async () => {
     router.push('http://localhost:4000/login/kakao');
+  };
+
+  const onClickLogin = async () => {
+    try {
+      const result = await login({
+        variables: {
+          email: 'aaa@aaa.com',
+          password: '1234',
+        },
+      });
+      const accessToken = result.data?.login || '';
+      if (setAccessToken) setAccessToken(accessToken);
+
+      router.push('/mypage');
+    } catch (error) {
+      if (error instanceof Error) Modal.error({ content: error.message });
+    }
   };
 
   return (
@@ -77,6 +106,9 @@ export default function SocialLoginPage() {
             onClick={onClickKakaoLogin}
           />
         </div>
+        <Button onClick={onClickLogin} style={{ marginTop: '24px' }}>
+          SNS가입없이 테스트용 계정으로 로그인하기! 클릭!
+        </Button>
       </LoginBox>
     </Wrapper>
   );
