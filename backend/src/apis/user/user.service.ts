@@ -21,10 +21,7 @@ export class UserService {
   ) {}
 
   async findOne({ email }) {
-    const user = await this.userRepository.findOne({
-      select: ['email', 'password', 'nickname', 'image', 'createdAt'],
-      where: { email },
-    });
+    const user = await this.userRepository.findOne({ email });
     return user;
   }
 
@@ -53,6 +50,12 @@ export class UserService {
   async updateNickname({ email, nickname }) {
     if (await this.userRepository.findOne({ nickname }))
       throw new ConflictException('이미 존재하는 닉네임입니다.');
-    await this.userRepository.update({ email }, { nickname });
+
+    const user = await this.findOne({ email });
+    const newUser = {
+      ...user,
+      nickname,
+    };
+    return await this.userRepository.save(newUser);
   }
 }

@@ -1,9 +1,10 @@
 import { UseGuards, UseInterceptors } from '@nestjs/common';
-import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { GqlAuthAccessGuard } from 'src/common/auth/gql-auth.guard';
 import { CurrentUser, ICurrentUser } from 'src/common/auth/gql-user.param';
 import { UndefinedToNullInterceptor } from 'src/common/interceptors/undefinedToNull.interceptor';
 import { CreateUserInput } from './dto/createUser.Input';
+import { UpdateNicknameInput } from './dto/updateNickname.input';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 
@@ -27,8 +28,11 @@ export class UserResolver {
   @Mutation(() => User)
   async updateNickname(
     @CurrentUser() currentUser: ICurrentUser,
-    @Args('nickname') nickname: string,
+    @Args('updateNicknameInput') updateNicknameInput: UpdateNicknameInput,
   ) {
-    await this.userService.updateNickname({ email: currentUser.email, nickname });
+    return await this.userService.updateNickname({
+      email: currentUser.email,
+      nickname: updateNicknameInput.nickname,
+    });
   }
 }

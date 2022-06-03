@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { IsEmail, Matches } from 'class-validator';
 
 @Entity()
 @ObjectType()
@@ -14,6 +15,7 @@ export class User {
   @Field(() => String)
   id: string;
 
+  @IsEmail()
   @Column({ unique: true })
   @Field(() => String)
   email: string;
@@ -21,6 +23,7 @@ export class User {
   @Column()
   password: string;
 
+  @Matches('^[가-힣]{2,6}$')
   @Column({ unique: true })
   @Field(() => String)
   nickname: string;

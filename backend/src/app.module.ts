@@ -28,6 +28,7 @@ import { FileModule } from './apis/file/file.module';
         origin: [process.env.CLIENT_URL],
         credentials: true,
       },
+      playground: !!process.env.PLAYGROUND,
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -35,11 +36,11 @@ import { FileModule } from './apis/file/file.module';
       port: 3306,
       username: process.env.MYSQL_USERNAME,
       password: process.env.MYSQL_PASSWORD,
-      database: 'cu2',
+      database: process.env.MYSQL_DATABASE,
       entities: [__dirname + '/apis/**/*.entity.*'],
-      synchronize: true,
-      logging: true,
       timezone: 'Asia/Seoul',
+      synchronize: !!process.env.SYNCHRONIZE,
+      logging: !!process.env.LOGGIN,
     }),
     CacheModule.register<RedisClientOptions>({
       store: redisStore,
