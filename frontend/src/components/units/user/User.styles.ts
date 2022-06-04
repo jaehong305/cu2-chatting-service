@@ -1,6 +1,4 @@
 import styled from '@emotion/styled';
-import { Button } from 'antd';
-import { IMyButtonProps } from './User.types';
 
 export const Wrapper = styled.div`
   display: flex;

@@ -73,7 +73,7 @@ export const Li = styled.li`
     background-color: #b956ab;
   }
 
-  & > span:first-child {
+  & > span {
     max-width: 190px;
   }
 `;

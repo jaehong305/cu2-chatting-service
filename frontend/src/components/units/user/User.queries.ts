@@ -7,13 +7,6 @@ export const CREATE_USER = gql`
     }
   }
 `;
-
-export const UPDATE_FILE = gql`
-  mutation updateFile($files: [Upload!]!) {
-    updateFile(files: $files)
-  }
-`;
-
 export const UPLOAD_FILE = gql`
   mutation uploadFile($files: [Upload!]!) {
     uploadFile(files: $files)
@@ -23,6 +16,20 @@ export const UPLOAD_FILE = gql`
 export const FETCH_USER = gql`
   query fetchUser {
     fetchUser {
+      email
+      nickname
+      image
+    }
+  }
+`;
+export const UPDATE_FILE = gql`
+  mutation updateFile($files: [Upload!]!) {
+    updateFile(files: $files)
+  }
+`;
+export const UPDATE_NICKNAME = gql`
+  mutation updateNickname($updateNicknameInput: UpdateNicknameInput!) {
+    updateNickname(updateNicknameInput: $updateNicknameInput) {
       email
       nickname
       image

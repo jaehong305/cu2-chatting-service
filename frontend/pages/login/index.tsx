@@ -1,8 +1,9 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql, useApolloClient, useMutation } from '@apollo/client';
 import styled from '@emotion/styled';
 import { Button, Modal } from 'antd';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
+import { FETCH_USER } from '../../src/components/units/user/User.queries';
 import { GlobalContext } from '../_app';
 
 const Wrapper = styled.div`
@@ -56,7 +57,8 @@ const LOGIN = gql`
 export default function SocialLoginPage() {
   const router = useRouter();
   const [login] = useMutation(LOGIN);
-  const { setAccessToken } = useContext(GlobalContext);
+  const { setAccessToken, setUserInfo } = useContext(GlobalContext);
+  const client = useApolloClient();
 
   const onClickNaverLogin = async () => {
     router.push('http://localhost:4000/login/naver');
@@ -70,6 +72,7 @@ export default function SocialLoginPage() {
 
   const onClickLogin = async () => {
     try {
+      // 로그인
       const result = await login({
         variables: {
           email: 'aaa@aaa.com',
@@ -77,7 +80,23 @@ export default function SocialLoginPage() {
         },
       });
       const accessToken = result.data?.login || '';
+
+      // 로그인한 유저정보
+      const userInfo = await client.query({
+        query: FETCH_USER,
+        context: {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      });
+
+      // 글로벌 스테이트 저장
       if (setAccessToken) setAccessToken(accessToken);
+      if (setUserInfo) setUserInfo(userInfo.data.fetchUser);
+
+      localStorage.setItem('accessToken', accessToken || '');
+      localStorage.setItem('userInfo', JSON.stringify(userInfo) || '{}');
 
       router.push('/mypage');
     } catch (error) {
