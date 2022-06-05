@@ -12,7 +12,8 @@ export const globalStyles = css`
   input {
     outline: none;
     height: 30px;
-    padding-left: 10px;
+    padding: 4px 10px;
+    border: 1px solid #a3a3a3;
   }
   textarea {
     border: none;
