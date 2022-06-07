@@ -1,16 +1,20 @@
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-// @ts-ignore
-export const withAuth = (Component) => (props) => {
+export function useAuth() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!localStorage.getItem('accessToken')) {
       alert('로그인이 필요합니다.');
       router.push('/login');
+    } else {
+      setIsLoading(false);
     }
   }, []);
 
-  return <Component {...props} />;
-};
+  return {
+    isLoading,
+  };
+}

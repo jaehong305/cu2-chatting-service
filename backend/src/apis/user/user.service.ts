@@ -7,9 +7,11 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cache } from 'cache-manager';
-import { Repository } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { v4 as uuidv4 } from 'uuid';
+import { ServerMember } from '../server/entities/serverMember.entity';
+import { Server } from '../server/entities/server.entity';
 
 @Injectable()
 export class UserService {
@@ -18,6 +20,7 @@ export class UserService {
     private readonly cacheManager: Cache,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly connection: Connection,
   ) {}
 
   async findOne({ email }) {
@@ -34,13 +37,34 @@ export class UserService {
     if (await this.userRepository.findOne({ nickname: createUserInput.nickname }))
       throw new ConflictException('이미 존재하는 닉네임입니다.');
 
-    const user = await this.userRepository.save({
-      ...createUserInput,
-      password: uuidv4(),
-    });
-    await this.cacheManager.del(`email:${createUserInput.email}`);
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-    return user;
+    try {
+      const user = await queryRunner.manager.getRepository(User).save({
+        ...createUserInput,
+        password: uuidv4(),
+      });
+
+      await this.cacheManager.del(`email:${createUserInput.email}`);
+
+      const server = new Server();
+      server.name = 'Javascript';
+      server.id = '1234';
+
+      await queryRunner.manager.getRepository(ServerMember).save({
+        User: user,
+        Server: server,
+      });
+
+      await queryRunner.commitTransaction();
+      return user;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async updateImage({ image, currentUser }) {

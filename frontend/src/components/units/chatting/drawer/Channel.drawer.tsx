@@ -3,10 +3,11 @@ import { useRef, useState } from 'react';
 import { DrawerChannelLi, DrawerCustom, DrawerUl, SearchIcon, SearchInput } from './Drawer.styles';
 
 export default function ChannelDrawer(props) {
-  const [value, setValue] = useState(false);
+  const [value, setValue] = useState(true);
   const searchRef = useRef<HTMLInputElement>(null);
 
   const onClickSearchChannel = () => {
+    searchRef.current?.focus();
     setValue(!value);
     if (value) {
       searchRef.current?.focus();

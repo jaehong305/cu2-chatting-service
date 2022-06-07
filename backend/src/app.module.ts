@@ -38,9 +38,8 @@ import { FileModule } from './apis/file/file.module';
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_DATABASE,
       entities: [__dirname + '/apis/**/*.entity.*'],
-      timezone: 'Asia/Seoul',
       synchronize: !!process.env.SYNCHRONIZE,
-      logging: !!process.env.LOGGIN,
+      logging: !!process.env.LOGGING,
     }),
     CacheModule.register<RedisClientOptions>({
       store: redisStore,

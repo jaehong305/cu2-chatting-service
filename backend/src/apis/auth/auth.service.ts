@@ -1,7 +1,9 @@
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+
 import { Cache } from 'cache-manager';
+
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -38,11 +40,11 @@ export class AuthService {
       if (!email) await this.cacheManager.set(`email:${req.user.email}`, 'email', { ttl: 60 * 60 });
 
       res.setHeader('Set-Cookie', `email=${req.user.email}; path=/;`);
-      res.redirect('http://localhost:3000/signup');
+      res.redirect(`${process.env.CLIENT_URL}/signup`);
       return;
     }
 
     this.setRefreshToken({ user, res });
-    res.redirect('http://localhost:3000/mypage');
+    res.redirect(`${process.env.CLIENT_URL}/mypage`);
   }
 }

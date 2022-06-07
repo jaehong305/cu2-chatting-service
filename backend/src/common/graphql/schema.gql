@@ -2,13 +2,25 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
+type Server {
   id: String!
-  email: String!
-  nickname: String!
-  image: String
+  name: String!
+  ServerMembers: [ServerMember!]!
+}
+
+type ServerMember {
+  id: String!
+  User: User!
+  Server: Server!
+}
+
+type ChannelChat {
+  content: String
+  enter: Boolean!
+  exit: Boolean!
   createdAt: DateTime!
-  updatedAt: DateTime!
+  Channel: Channel!
+  User: User!
 }
 
 """
@@ -16,21 +28,62 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Channel {
+  id: String!
+  name: String!
+  intro: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  Server: Server!
+  Owner: User!
+  ChannelMembers: [ChannelMember!]!
+  ChannelChats: [ChannelChat!]!
+}
+
+type ChannelMember {
+  id: String!
+  User: User!
+  Channel: Channel!
+}
+
+type User {
+  id: String!
+  email: String!
+  nickname: String!
+  image: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  ServerMembers: [ServerMember!]!
+  ChannelMembers: [ChannelMember!]!
+  ChannelChats: [ChannelChat!]!
+}
+
+type GetUsersAndCount {
+  users: [User!]!
+  count: Int!
+}
+
 type Query {
   fetchUser: User!
+  fetchAllChannelsInServer(serverId: String!): [Channel!]!
+  fetchAllMyChannelsInServer(serverId: String!): [Channel!]!
+  fetchAllUsersAndCountInChannel(channelId: String!): GetUsersAndCount!
+  fetchAllChannelChats(channelId: String!, page: Float!): [ChannelChat!]!
 }
 
 type Mutation {
   login(email: String!, password: String!): String!
   restoreAccessToken: String!
-  uploadFile(files: [Upload!]!): [String!]!
-  updateFile(files: [Upload!]!): [String!]!
   createUser(createUserInput: CreateUserInput!): User!
   updateNickname(updateNicknameInput: UpdateNicknameInput!): User!
+  createChannel(createChannelInput: CreateChannelInput!): Channel!
+  joinChannel(channelId: String!): String!
+  sendChannelMessage(channelId: String!, content: String!): ChannelChat!
+  uploadFile(files: [Upload!]!): [String!]!
+  updateFile(files: [Upload!]!): [String!]!
+  createServer(name: String!): Server!
 }
-
-"""The `Upload` scalar type represents a file upload."""
-scalar Upload
 
 input CreateUserInput {
   email: String!
@@ -41,3 +94,12 @@ input CreateUserInput {
 input UpdateNicknameInput {
   nickname: String!
 }
+
+input CreateChannelInput {
+  name: String!
+  intro: String!
+  serverId: String!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload

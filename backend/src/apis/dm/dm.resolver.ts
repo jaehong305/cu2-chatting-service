@@ -1,9 +1,4 @@
-import { Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Resolver } from '@nestjs/graphql';
 
 @Resolver()
-export class DmResolver {
-  // @Query(() => String)
-  // fetchDM() {}
-  // @Mutation(() => String)
-  // sendDM() {}
-}
+export class DmResolver {}

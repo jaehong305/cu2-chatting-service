@@ -1,9 +1,12 @@
 import { createContext } from 'react';
-import { withAuth } from '../../src/components/commons/hocs/withAuth';
+import { useAuth } from '../../src/components/commons/hooks/useAuth';
 import User from '../../src/components/units/user/User.container';
 
 export const UserContext = createContext(null);
 const MyPage = () => {
+  const { isLoading } = useAuth();
+
+  if (isLoading) return <></>;
   return (
     <UserContext.Provider value={{ isEdit: true }}>
       <User />;
@@ -11,4 +14,4 @@ const MyPage = () => {
   );
 };
 
-export default withAuth(MyPage);
+export default MyPage;
