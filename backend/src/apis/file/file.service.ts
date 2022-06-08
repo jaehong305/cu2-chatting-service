@@ -11,7 +11,6 @@ interface IFile {
 
 const { GCP_STORAGE_FILENAME, GCP_STORAGE_PROJECTID, GCP_STORAGE_BUCKET } = process.env;
 
-// 스토리지에 이미지 업로드
 const storage = new Storage({
   keyFilename: GCP_STORAGE_FILENAME,
   projectId: GCP_STORAGE_PROJECTID,
@@ -22,10 +21,8 @@ export class FileService {
   constructor(private readonly userService: UserService) {}
 
   async upload({ files }: IFile) {
-    // 일단 먼저 다 받기
     const waitedFiles = await Promise.all(files);
 
-    // 구글 스토리지에 동시에 모두 올리기
     const results = await Promise.all(
       waitedFiles.map(
         (file) =>
@@ -51,10 +48,8 @@ export class FileService {
       await storage.file(user.image.replace(`${GCP_STORAGE_BUCKET}/`, '')).delete();
     }
 
-    // 일단 먼저 다 받기
     const waitedFiles = await Promise.all(files);
 
-    // 구글 스토리지에 동시에 모두 올리기
     const image = await Promise.all(
       waitedFiles.map(
         (file) =>

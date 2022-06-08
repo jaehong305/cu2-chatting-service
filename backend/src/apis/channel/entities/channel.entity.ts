@@ -5,6 +5,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -12,6 +14,7 @@ import {
 } from 'typeorm';
 import { ChannelChat } from './channelChat.entity';
 import { ChannelMember } from './channelMember.entity';
+import { Tag } from './tag.entity';
 
 @Entity()
 @ObjectType()
@@ -36,7 +39,7 @@ export class Channel {
   @Field(() => Date)
   updatedAt: Date;
 
-  @ManyToOne(() => Server)
+  @ManyToOne(() => Server, { eager: true })
   @Field(() => Server)
   Server: Server;
 
@@ -51,4 +54,9 @@ export class Channel {
   @OneToMany(() => ChannelChat, (channelchat) => channelchat.Channel)
   @Field(() => [ChannelChat])
   ChannelChats: ChannelChat[];
+
+  @JoinTable()
+  @ManyToMany(() => Tag, (tags) => tags.Channels)
+  @Field(() => [Tag])
+  Tags: Tag[];
 }

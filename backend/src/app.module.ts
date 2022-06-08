@@ -7,13 +7,13 @@ import { UserModule } from './apis/user/user.module';
 import { AuthModule } from './apis/auth/auth.module';
 import { ServerModule } from './apis/server/server.module';
 import { ChannelModule } from './apis/channel/channel.module';
-import { DmModule } from './apis/dm/dm.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { RedisClientOptions } from 'redis';
 import redisStore from 'cache-manager-redis-store';
 import { FileModule } from './apis/file/file.module';
+import { EventsModule } from './apis/events/events.module';
 
 @Module({
   imports: [
@@ -48,10 +48,10 @@ import { FileModule } from './apis/file/file.module';
     }),
     AuthModule,
     ChannelModule,
-    DmModule,
     FileModule,
     ServerModule,
     UserModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

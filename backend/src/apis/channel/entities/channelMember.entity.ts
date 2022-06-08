@@ -17,7 +17,10 @@ export class ChannelMember {
   @Field(() => User)
   User: User;
 
-  @ManyToOne(() => Channel, (channel) => channel.ChannelMembers)
+  @ManyToOne(() => Channel, (channel) => channel.ChannelMembers, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @Field(() => Channel)
   Channel: Channel;
 }

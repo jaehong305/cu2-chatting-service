@@ -5,4 +5,7 @@ import { Channel } from '../entities/channel.entity';
 export class CreateChannelInput extends PickType(Channel, ['name', 'intro'], InputType) {
   @Field(() => String)
   serverId: string;
+
+  @Field(() => [String])
+  tags: string[];
 }

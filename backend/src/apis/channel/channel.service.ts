@@ -1,11 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Connection, MoreThan, Repository } from 'typeorm';
+import { EventsGateway } from '../events/events.gateway';
 import { Server } from '../server/entities/server.entity';
 import { User } from '../user/entities/user.entity';
 import { Channel } from './entities/channel.entity';
 import { ChannelChat } from './entities/channelChat.entity';
 import { ChannelMember } from './entities/channelMember.entity';
+import { Tag } from './entities/tag.entity';
 
 @Injectable()
 export class ChannelService {
@@ -14,7 +16,9 @@ export class ChannelService {
     @InjectRepository(User) private readonly userReposiotry: Repository<User>,
     @InjectRepository(Server) private readonly serverRepository: Repository<Server>,
     @InjectRepository(ChannelChat) private readonly channelChatRepository: Repository<ChannelChat>,
+    @InjectRepository(Tag) private readonly tagRepository: Repository<Tag>,
     private readonly connection: Connection,
+    private readonly eventsGateway: EventsGateway,
   ) {}
 
   async getAllChannelsInServer(serverId) {
@@ -72,19 +76,41 @@ export class ChannelService {
   }
 
   async createChannelInServer({ createChannelInput, currentUser }) {
-    const { serverId, ...rest } = createChannelInput;
+    const { serverId, tags, ...rest } = createChannelInput;
     const server = await this.serverRepository.findOne({ id: serverId });
     if (!server) throw new NotFoundException('존재하지 않는 서버입니다.');
     const owner = await this.userReposiotry.findOne({ email: currentUser.email });
 
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
-    await queryRunner.startTransaction();
+    await queryRunner.startTransaction('SERIALIZABLE');
 
     try {
-      const channel = await queryRunner.manager.getRepository(Channel).save({ ...rest, Server: server, Owner: owner });
-      await queryRunner.manager.getRepository(ChannelMember).save({ Channel: channel, User: owner });
-      queryRunner.commitTransaction();
+      const result = [];
+      const tagnames = tags.map((el) => el.replace('#', ''));
+      const prevTags = await Promise.all(
+        tagnames.map((name) =>
+          queryRunner.manager.getRepository(Tag).findOne({ name }, { lock: { mode: 'pessimistic_write' } }),
+        ),
+      );
+      const newTags = await Promise.all(
+        prevTags
+          .map((prevTag, i) => {
+            if (!prevTag) {
+              return queryRunner.manager.getRepository(Tag).save({ name: tagnames[i] });
+            } else {
+              result.push(prevTag);
+            }
+          })
+          .filter((el) => el),
+      );
+      const Tags = [...result, ...newTags];
+
+      const channel = await queryRunner.manager
+        .getRepository(Channel)
+        .save({ ...rest, Server: server, Owner: owner, Tags });
+      await queryRunner.manager.getRepository(ChannelMember).save({ User: owner, Channel: channel });
+      await queryRunner.commitTransaction();
       return channel;
     } catch (error) {
       await queryRunner.rollbackTransaction();
@@ -118,6 +144,7 @@ export class ChannelService {
     const channel = await this.channelRepository.findOne({ id: channelId });
     if (!channel) throw new NotFoundException('채널이 존재하지 않습니다.');
     const user = await this.userReposiotry.findOne({ email: currentUser.email });
-    return await this.channelChatRepository.save({ Channel: channel, User: user, content });
+    const channelChatWithUser = await this.channelChatRepository.save({ Channel: channel, User: user, content });
+    this.eventsGateway.server.to(`${channel.Server.id}-${channelId}`).emit('message', channelChatWithUser);
   }
 }
