@@ -3,7 +3,7 @@ import { useAuth } from '../../src/components/commons/hooks/useAuth';
 import User from '../../src/components/units/user/User.container';
 
 export const UserContext = createContext(null);
-const MyPage = () => {
+export default function MyPage() {
   const { isLoading } = useAuth();
 
   if (isLoading) return <></>;
@@ -12,6 +12,4 @@ const MyPage = () => {
       <User />;
     </UserContext.Provider>
   );
-};
-
-export default MyPage;
+}

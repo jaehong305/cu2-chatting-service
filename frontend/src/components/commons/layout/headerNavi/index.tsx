@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
-import { Fragment, MouseEvent } from 'react';
+import { Fragment } from 'react';
+import { useMoveToPage } from '../../hooks/useMoveToPage';
 
 export const Wrapper = styled.div`
   height: 64px;
@@ -31,19 +31,13 @@ const HEADER_NAVI_MENUS = [
 ];
 
 export default function LayoutHeaderNavi() {
-  const router = useRouter();
-
-  const onClickMenu = (e: MouseEvent<HTMLDivElement>) => {
-    if (e.target instanceof Element) router.push(e.target.id);
-  };
+  const { moveToPage } = useMoveToPage();
 
   return (
     <Wrapper>
       {HEADER_NAVI_MENUS.map((e) => (
         <Fragment key={e.page}>
-          <MenuItem id={e.page} onClick={onClickMenu}>
-            {e.name}
-          </MenuItem>
+          <MenuItem onClick={moveToPage(e.page)}>{e.name}</MenuItem>
         </Fragment>
       ))}
     </Wrapper>

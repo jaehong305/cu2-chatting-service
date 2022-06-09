@@ -8,7 +8,7 @@ export default function SignUpPage() {
   useEffect(() => {
     const email = document.cookie
       .split('; ')
-      .filter((e) => e.includes('email='))[0]
+      .filter((e) => e.startsWith('email='))[0]
       .replace('email=', '');
     setEmail(email);
   }, []);

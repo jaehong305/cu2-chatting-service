@@ -1,11 +1,11 @@
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useContext, useRef, useState } from 'react';
 import { UserContext } from '../../../../pages/mypage';
 import { GlobalContext } from '../../../../pages/_app';
 import { checkFileValidation } from '../../../commons/libraries/utils';
 import UserUI from './User.presenter';
-import { CREATE_USER, UPDATE_FILE, UPDATE_NICKNAME, UPLOAD_FILE } from './User.queries';
+import { CREATE_USER, FETCH_USER, UPDATE_FILE, UPDATE_NICKNAME, UPLOAD_FILE } from './User.queries';
 
 export default function User() {
   const [nickname, setNickname] = useState('');
@@ -15,6 +15,7 @@ export default function User() {
   const router = useRouter();
   const { email } = useContext(UserContext);
   const [createUser] = useMutation(CREATE_USER);
+  const { data } = useQuery(FETCH_USER);
   const [uploadFile] = useMutation(UPLOAD_FILE);
   const [updateFile] = useMutation(UPDATE_FILE);
   const [updateNickname] = useMutation(UPDATE_NICKNAME);

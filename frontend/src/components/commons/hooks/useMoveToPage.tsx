@@ -1,15 +1,17 @@
 import { useRouter } from 'next/router';
-
-type IPage = '/mypage';
+import { useState } from 'react';
 
 export function useMoveToPage() {
   const router = useRouter();
+  const [visitedPage, setVisitedPage] = useState('/');
 
-  const moveToPage = (page: IPage) => () => {
+  const moveToPage = (page) => () => {
+    setVisitedPage(page);
     router.push(page);
   };
 
   return {
     moveToPage,
+    visitedPage,
   };
 }
