@@ -11,8 +11,8 @@ export default function SignUpPage() {
       .split('; ')
       .filter((e) => e.startsWith('email='))[0]
       ?.replace('email=', '');
-    console.log(email);
-    setEmail('bbbbb', email);
+    console.log('bbbbb', email);
+    setEmail(email);
   }, []);
 
   return (
