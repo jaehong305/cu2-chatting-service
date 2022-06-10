@@ -6,13 +6,13 @@ export default function SignUpPage() {
   const [email, setEmail] = useState('');
 
   useEffect(() => {
-    console.log(document.cookie);
+    console.log('aaaaa', document.cookie);
     const email = document.cookie
       .split('; ')
       .filter((e) => e.startsWith('email='))[0]
       ?.replace('email=', '');
     console.log(email);
-    setEmail(email);
+    setEmail('bbbbb', email);
   }, []);
 
   return (
