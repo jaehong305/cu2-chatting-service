@@ -30,7 +30,7 @@ export class AuthService {
     );
     res.setHeader(
       'Set-Cookie',
-      `refreshToken=${refreshToken}; path=/; domain=.ljh305.shop; SameSite=None; Secure; httpOnly;`,
+      `refreshToken=${refreshToken}; path=/; domain=.cu2.shop; SameSite=None; Secure; httpOnly;`,
     );
   }
 
@@ -42,7 +42,7 @@ export class AuthService {
       const email = await this.cacheManager.get(`email:${req.user.email}`);
       if (!email) await this.cacheManager.set(`email:${req.user.email}`, 'email', { ttl: 60 * 60 });
 
-      res.setHeader('Set-Cookie', `email=${req.user.email}; path=/; domain=.ljh305.shop; SameSite=None; Secure;`);
+      res.setHeader('Set-Cookie', `email=${req.user.email}; path=/; domain=.cu2.shop;`);
       res.redirect(`${process.env.CLIENT_URL}/signup`);
       return;
     }
