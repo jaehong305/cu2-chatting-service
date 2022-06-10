@@ -28,7 +28,10 @@ export class AuthService {
       { email: user.email, sub: user.id },
       { secret: this.configService.get('REFRESH_TOKEN_KEY'), expiresIn: '2w' },
     );
-    res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/; domain=.ljh305.shop; SameSite=None; httpOnly;`);
+    res.setHeader(
+      'Set-Cookie',
+      `refreshToken=${refreshToken}; path=/; domain=.ljh305.shop; SameSite=None; Secure; httpOnly;`,
+    );
   }
 
   async OAuthLogin(req, res) {
@@ -39,7 +42,10 @@ export class AuthService {
       const email = await this.cacheManager.get(`email:${req.user.email}`);
       if (!email) await this.cacheManager.set(`email:${req.user.email}`, 'email', { ttl: 60 * 60 });
 
-      res.setHeader('Set-Cookie', `email=${req.user.email}; path=/; domain=.ljh305.shop; SameSite=None; httpOnly;`);
+      res.setHeader(
+        'Set-Cookie',
+        `email=${req.user.email}; path=/; domain=.ljh305.shop; SameSite=None; Secure; httpOnly;`,
+      );
       res.redirect(`${process.env.CLIENT_URL}/signup`);
       return;
     }
