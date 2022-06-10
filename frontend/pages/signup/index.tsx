@@ -9,7 +9,7 @@ export default function SignUpPage() {
     const email = document.cookie
       .split('; ')
       .filter((e) => e.startsWith('email='))[0]
-      .replace('email=', '');
+      ?.replace('email=', '');
     setEmail(email);
   }, []);
 

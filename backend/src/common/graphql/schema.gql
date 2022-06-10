@@ -85,6 +85,7 @@ type Mutation {
   restoreAccessToken: String!
   createUser(createUserInput: CreateUserInput!): User!
   updateNickname(updateNicknameInput: UpdateNicknameInput!): User!
+  createTest(email: String!, password: String!, nickname: String!): User!
   createChannel(createChannelInput: CreateChannelInput!): Channel!
   joinChannel(channelId: String!): String!
   sendChannelMessage(channelId: String!, content: String!): ChannelChat!
