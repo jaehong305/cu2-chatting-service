@@ -6,6 +6,7 @@ export default function SignUpPage() {
   const [email, setEmail] = useState('');
 
   useEffect(() => {
+    console.log(document.cookie);
     const email = document.cookie
       .split('; ')
       .filter((e) => e.startsWith('email='))[0]
