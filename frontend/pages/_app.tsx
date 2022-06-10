@@ -8,6 +8,7 @@ import { createUploadLink } from 'apollo-upload-client';
 import { createContext, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { onError } from '@apollo/client/link/error';
 import { getAccessToken } from '../src/commons/libraries/getAccessToken';
+import { backendURL } from '../src/commons/config/config';
 
 interface IGlobalContext {
   accessToken?: string;
@@ -52,7 +53,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   });
 
   const uploadLink = createUploadLink({
-    uri: 'http://localhost:4000/graphql',
+    uri: `${backendURL}/graphql`,
     headers: { Authorization: `Bearer ${accessToken}` },
     credentials: 'include',
   });

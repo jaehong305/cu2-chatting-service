@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { Button, Modal } from 'antd';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
+import { backendURL } from '../../src/commons/config/config';
 import { GlobalContext } from '../_app';
 
 const Wrapper = styled.div`
@@ -59,13 +60,13 @@ export default function SocialLoginPage() {
   const { setAccessToken, visitedPage } = useContext(GlobalContext);
 
   const onClickNaverLogin = async () => {
-    router.push('http://localhost:4000/login/naver');
+    router.push(`${backendURL}/login/naver`);
   };
   const onClickGoogleLogin = async () => {
-    router.push('http://localhost:4000/login/google');
+    router.push(`${backendURL}/login/google`);
   };
   const onClickKakaoLogin = async () => {
-    router.push('http://localhost:4000/login/kakao');
+    router.push(`${backendURL}/login/kakao`);
   };
 
   const onClickLogin = async () => {

@@ -1,10 +1,4 @@
-import {
-  CACHE_MANAGER,
-  ConflictException,
-  Inject,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { CACHE_MANAGER, ConflictException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cache } from 'cache-manager';
 import { Connection, Repository } from 'typeorm';
@@ -32,8 +26,7 @@ export class UserService {
     const authEmail = await this.cacheManager.get(`email:${createUserInput.email}`);
     if (!authEmail) throw new UnauthorizedException('인증되지 않은 이메일입니다.');
 
-    if (await this.findOne({ email: createUserInput.email }))
-      throw new ConflictException('이미 가입된 이메일입니다.');
+    if (await this.findOne({ email: createUserInput.email })) throw new ConflictException('이미 가입된 이메일입니다.');
     if (await this.userRepository.findOne({ nickname: createUserInput.nickname }))
       throw new ConflictException('이미 존재하는 닉네임입니다.');
 
@@ -72,8 +65,7 @@ export class UserService {
   }
 
   async updateNickname({ email, nickname }) {
-    if (await this.userRepository.findOne({ nickname }))
-      throw new ConflictException('이미 존재하는 닉네임입니다.');
+    if (await this.userRepository.findOne({ nickname })) throw new ConflictException('이미 존재하는 닉네임입니다.');
 
     const user = await this.findOne({ email });
     const newUser = {
@@ -81,5 +73,9 @@ export class UserService {
       nickname,
     };
     return await this.userRepository.save(newUser);
+  }
+
+  createTestID({ email, password, nickname }) {
+    return this.userRepository.save({ email, password, nickname });
   }
 }

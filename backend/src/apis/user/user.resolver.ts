@@ -35,4 +35,9 @@ export class UserResolver {
       nickname: updateNicknameInput.nickname,
     });
   }
+
+  @Mutation(() => User)
+  createTest(@Args('email') email, @Args('password') password, @Args('nickname') nickname) {
+    return this.userService.createTestID({ email, password, nickname });
+  }
 }
