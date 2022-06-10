@@ -10,6 +10,7 @@ export default function SignUpPage() {
       .split('; ')
       .filter((e) => e.startsWith('email='))[0]
       ?.replace('email=', '');
+    console.log(email);
     setEmail(email);
   }, []);
 
