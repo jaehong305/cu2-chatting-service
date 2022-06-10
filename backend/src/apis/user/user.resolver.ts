@@ -37,7 +37,7 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  createTest(@Args('email') email, @Args('password') password, @Args('nickname') nickname) {
+  createTest(@Args('email') email: string, @Args('password') password: string, @Args('nickname') nickname: string) {
     return this.userService.createTestID({ email, password, nickname });
   }
 }
