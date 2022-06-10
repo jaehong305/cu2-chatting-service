@@ -1,17 +1,16 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useContext } from 'react';
+import { GlobalContext } from '../../../../pages/_app';
 
 export function useMoveToPage() {
   const router = useRouter();
-  const [visitedPage, setVisitedPage] = useState('/');
+  const { setVisitedPage } = useContext(GlobalContext);
 
   const moveToPage = (page) => () => {
     setVisitedPage(page);
     router.push(page);
   };
-
   return {
     moveToPage,
-    visitedPage,
   };
 }

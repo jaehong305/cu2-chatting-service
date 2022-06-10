@@ -2,7 +2,6 @@ import { useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useContext, useRef, useState } from 'react';
 import { UserContext } from '../../../../pages/mypage';
-import { GlobalContext } from '../../../../pages/_app';
 import { checkFileValidation } from '../../../commons/libraries/utils';
 import UserUI from './User.presenter';
 import { CREATE_USER, FETCH_USER, UPDATE_FILE, UPDATE_NICKNAME, UPLOAD_FILE } from './User.queries';
@@ -19,7 +18,6 @@ export default function User() {
   const [uploadFile] = useMutation(UPLOAD_FILE);
   const [updateFile] = useMutation(UPDATE_FILE);
   const [updateNickname] = useMutation(UPDATE_NICKNAME);
-  const { userInfo, setUserInfo } = useContext(GlobalContext);
 
   const onChangeNickname = (event: ChangeEvent<HTMLInputElement>) => {
     setNickname(event.target.value);
@@ -43,7 +41,6 @@ export default function User() {
         },
       });
       setImageURL(result.data?.updateFile[0] || '');
-      setUserInfo({ ...userInfo, image: result.data?.updateFile[0] });
     } catch (error) {
       alert(error.message);
     }
@@ -86,14 +83,13 @@ export default function User() {
 
   const onClickChangeNickname = async () => {
     try {
-      const result = await updateNickname({
+      await updateNickname({
         variables: {
           updateNicknameInput: {
             nickname,
           },
         },
       });
-      setUserInfo(result.data.updateNickname);
       alert('닉네임이 변경되었습니다.');
     } catch (error) {
       alert('닉네임은 2~6글자 한글만 가능합니다.');
@@ -111,7 +107,7 @@ export default function User() {
       onClickSubmit={onClickSubmit}
       onClickChangeNickname={onClickChangeNickname}
       isActive={isActive}
-      userInfo={userInfo}
+      data={data}
     />
   );
 }

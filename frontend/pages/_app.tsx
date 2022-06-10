@@ -9,27 +9,21 @@ import { createContext, Dispatch, SetStateAction, useEffect, useState } from 're
 import { onError } from '@apollo/client/link/error';
 import { getAccessToken } from '../src/commons/libraries/getAccessToken';
 
-interface IUserInfo {
-  email?: string;
-  nickname?: string;
-  image?: string;
-}
-
 interface IGlobalContext {
   accessToken?: string;
   setAccessToken?: Dispatch<SetStateAction<string>>;
-  userInfo?: IUserInfo;
-  setUserInfo?: Dispatch<SetStateAction<IUserInfo>>;
+  visitedPage?: string;
+  setVisitedPage?: Dispatch<SetStateAction<string>>;
 }
 export const GlobalContext = createContext<IGlobalContext>({});
 function MyApp({ Component, pageProps }: AppProps) {
   const [accessToken, setAccessToken] = useState('');
-  const [userInfo, setUserInfo] = useState<IUserInfo>({});
+  const [visitedPage, setVisitedPage] = useState('/');
   const value = {
     accessToken,
     setAccessToken,
-    userInfo,
-    setUserInfo,
+    visitedPage,
+    setVisitedPage,
   };
 
   useEffect(() => {
@@ -42,7 +36,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     if (graphQLErrors) {
       for (const err of graphQLErrors) {
         if (err.extensions.code === 'UNAUTHENTICATED') {
-          //
           getAccessToken().then((newAccessToken) => {
             setAccessToken(newAccessToken);
             operation.setContext({

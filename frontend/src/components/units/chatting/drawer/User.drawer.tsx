@@ -22,7 +22,7 @@ export default function UserDrawer(props) {
       <DrawerUl>
         <DrawerLi>
           <div>
-            <ProfileImage src="/image/okitokiyo.gif" />
+            <ProfileImage src="/image/me.jpg" />
             <span>유저</span>
           </div>
           <Button size={'small'}>내보내기</Button>
@@ -30,7 +30,7 @@ export default function UserDrawer(props) {
         <DrawerLi>
           <div>
             <DefaultPofileImage />
-            <span>코치2</span>
+            <span>유저2</span>
           </div>
           <Button size={'small'}>내보내기</Button>
         </DrawerLi>

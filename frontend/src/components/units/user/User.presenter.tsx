@@ -22,8 +22,8 @@ export default function UserUI(props) {
               width={150}
               height={150}
               src={
-                props.userInfo?.image
-                  ? `https://storage.googleapis.com/${props.userInfo.image.replace(
+                props.data?.fetchUser?.image
+                  ? `https://storage.googleapis.com/${props.data?.fetchUser?.image.replace(
                       'thumb',
                       'origin',
                     )}`
@@ -48,9 +48,12 @@ export default function UserUI(props) {
         </S.ProfileImage>
         <S.InfoBox>
           <div>이메일</div>
-          <input readOnly value={props.userInfo?.email || email || ''} />
+          <input readOnly value={props.data?.fetchUser?.email || email || ''} />
           <div>닉네임</div>
-          <input onChange={props.onChangeNickname} defaultValue={props.userInfo?.nickname || ''} />
+          <input
+            onChange={props.onChangeNickname}
+            defaultValue={props.data?.fetchUser?.nickname || ''}
+          />
           <Button
             size={'small'}
             onClick={isEdit ? props.onClickChangeNickname : props.onClickSubmit}

@@ -16,7 +16,7 @@ export default function CoachDrawer(props) {
       <DrawerUl>
         <DrawerLi>
           <div>
-            <ProfileImage src="/image/크기.jpeg" />
+            <ProfileImage src="/image/me.jpg" />
             <span>코치1</span>
           </div>
           <Button size={'small'}>등록</Button>
