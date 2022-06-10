@@ -28,7 +28,7 @@ export class AuthService {
       { email: user.email, sub: user.id },
       { secret: this.configService.get('REFRESH_TOKEN_KEY'), expiresIn: '2w' },
     );
-    res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
+    res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/; domain=.ljh305.shop; SameSite=None; httpOnly;`);
   }
 
   async OAuthLogin(req, res) {
