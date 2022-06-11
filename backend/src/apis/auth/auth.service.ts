@@ -1,9 +1,7 @@
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-
 import { Cache } from 'cache-manager';
-
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -28,7 +26,10 @@ export class AuthService {
       { email: user.email, sub: user.id },
       { secret: this.configService.get('REFRESH_TOKEN_KEY'), expiresIn: '2w' },
     );
-    res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/; domain=.cu2.shop; Secure; httpOnly;`);
+    res.setHeader(
+      'Set-Cookie',
+      `refreshToken=${refreshToken}; path=/; domain=.cu2.shop; SameSite=None; Secure; httpOnly;`,
+    );
   }
 
   async OAuthLogin(req, res) {
