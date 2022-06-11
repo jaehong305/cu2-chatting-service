@@ -28,21 +28,16 @@ export class AuthService {
       { email: user.email, sub: user.id },
       { secret: this.configService.get('REFRESH_TOKEN_KEY'), expiresIn: '2w' },
     );
-    res.setHeader(
-      'Set-Cookie',
-      `refreshToken=${refreshToken}; path=/; domain=.cu2.shop; SameSite=None; Secure; httpOnly;`,
-    );
+    res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/; domain=.cu2.shop; Secure; httpOnly;`);
   }
 
   async OAuthLogin(req, res) {
     const user = await this.userService.findOne({ email: req.user.email });
 
-    // 구글 로그인시 유저정보가 없다면 redis에 이메일저장 및 쿠키에 이메일 저장 후 회원가입페이지로 이동
     if (!user) {
       const email = await this.cacheManager.get(`email:${req.user.email}`);
       if (!email) await this.cacheManager.set(`email:${req.user.email}`, 'email', { ttl: 60 * 60 });
 
-      console.log(req.user.email);
       res.redirect(`${process.env.CLIENT_URL}/signup?${req.user.email}`);
       return;
     }
