@@ -6,12 +6,10 @@ export default function SignUpPage() {
   const [email, setEmail] = useState('');
 
   useEffect(() => {
-    console.log('aaaaa', document.cookie);
     const email = document.cookie
-      .split('; ')
-      .filter((e) => e.startsWith('email='))[0]
+      ?.split('; ')
+      ?.filter((e) => e.startsWith('email='))[0]
       ?.replace('email=', '');
-    console.log('bbbbb', email);
     setEmail(email);
   }, []);
 
