@@ -42,8 +42,8 @@ export class AuthService {
       const email = await this.cacheManager.get(`email:${req.user.email}`);
       if (!email) await this.cacheManager.set(`email:${req.user.email}`, 'email', { ttl: 60 * 60 });
 
-      res.setHeader('Set-Cookie', `email=${req.user.email}; path=/; domain=.cu2.shop;`);
-      res.redirect(`${process.env.CLIENT_URL}/signup`);
+      console.log(req.user.email);
+      res.redirect(`${process.env.CLIENT_URL}/signup?${req.user.email}`);
       return;
     }
 
