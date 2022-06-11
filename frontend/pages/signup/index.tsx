@@ -1,16 +1,15 @@
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import User from '../../src/components/units/user/User.container';
 import { UserContext } from '../mypage';
 
 export default function SignUpPage() {
   const [email, setEmail] = useState('');
+  const router = useRouter();
 
   useEffect(() => {
-    const email = document.cookie
-      ?.split('; ')
-      ?.filter((e) => e.startsWith('email='))[0]
-      ?.replace('email=', '');
-    setEmail(email);
+    const social = router.asPath.split('?')[1];
+    setEmail(social);
   }, []);
 
   return (
