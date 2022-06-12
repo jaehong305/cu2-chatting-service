@@ -28,7 +28,7 @@ export class AuthService {
     );
     res.setHeader(
       'Set-Cookie',
-      `refreshToken=${refreshToken}; path=/; domain=.cu2.shop; SameSite=None; Secure; httpOnly;`,
+      `refreshToken=${refreshToken}; path=/; domain=.ljh305.shop; SameSite=None; Secure; httpOnly;`,
     );
   }
 
