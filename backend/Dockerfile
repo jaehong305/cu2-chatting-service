@@ -6,4 +6,5 @@ COPY ./yarn.lock /cu2_backend/
 RUN yarn install
 
 COPY . /cu2_backend/
-CMD yarn start:dev
+RUN yarn build
+CMD yarn start:prod

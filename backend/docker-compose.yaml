@@ -19,7 +19,6 @@ services:
     environment:
       MYSQL_DATABASE: 'cu2'
       MYSQL_ROOT_PASSWORD: 'root'
-      TZ: 'Asia/Seoul'
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
@@ -28,9 +27,8 @@ services:
       - SYS_NICE
     ports:
       - 3306:3306
-  
+
   cu2_redis:
     image: redis:latest
     ports:
       - 6379:6379
-
