@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:16
 
 WORKDIR /cu2_backend/
 COPY ./package.json /cu2_backend/
