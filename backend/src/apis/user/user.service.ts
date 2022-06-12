@@ -43,7 +43,7 @@ export class UserService {
       await this.cacheManager.del(`email:${createUserInput.email}`);
 
       const server = new Server();
-      server.id = '81a3b6e3-0550-460c-b7c4-b73ef1064e62';
+      server.id = '1b1dc881-9b32-4c71-8bcd-96aaaced1069';
 
       await queryRunner.manager.getRepository(ServerMember).save({
         User: user,
