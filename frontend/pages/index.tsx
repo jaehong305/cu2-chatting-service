@@ -5,9 +5,9 @@ export default function IntroPage() {
       <p>프로필이미지 업로드 수정, 닉네임 수정이 가능합니다.</p>
       <p>채팅은 화면 디자인까지 끝냈으며 백엔드 먼저 개발 후 현재 프론트엔드 개발 진행중입니다.</p>
 
-      <h5>구현순서</h5>
+      <h3>구현순서</h3>
       <ol>
-        <span>1단계: 회원 (완료)</span>
+        <h4>1단계: 회원 (완료)</h4>
         <li>
           1. 로그인페이지 (채팅, 마이페이지 미로그인시 이동, 로그인 후 원래 이동하려던 페이지이동
         </li>
@@ -17,7 +17,7 @@ export default function IntroPage() {
         <li>5. 프로필이미지 업로드, 닉네임변경(한글2~6자, 중복확인)</li>
       </ol>
       <ol>
-        <span>2단계: 채팅 (프론트개발진행중)</span>
+        <h4>2단계: 채팅 (프론트개발진행중)</h4>
         <li>1. 서버생성, 채널생성(태그,설명)</li>
         <li>2. 채널입장, 채팅메세지(입장퇴장기록)</li>
         <li>3. 채널검색</li>
@@ -26,7 +26,7 @@ export default function IntroPage() {
         <li>6. 디엠</li>
       </ol>
       <ol>
-        <span>3단계: 배포 (완료)</span>
+        <h4>3단계: 배포 (완료)</h4>
         <li>1. 프론트 AWS배포, 백엔드 GCP배포 및 DNS설정</li>
         <li>2. 프론트 nginx https설정, 백엔드 loadbalancer https 설정</li>
       </ol>
