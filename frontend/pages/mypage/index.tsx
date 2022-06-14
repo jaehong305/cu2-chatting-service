@@ -9,7 +9,7 @@ export default function MyPage() {
   if (isLoading) return <></>;
   return (
     <UserContext.Provider value={{ isEdit: true }}>
-      <User />;
+      <User />
     </UserContext.Provider>
   );
 }
