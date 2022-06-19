@@ -74,6 +74,7 @@ type GetUsersAndCount {
 type Query {
   fetchUser: User!
   fetchAllChannelsInServer(serverId: String!): [Channel!]!
+  searchChannelsInServer(search: String!): [Channel!]!
   fetchAllMyChannelsInServer(serverId: String!): [Channel!]!
   fetchAllUsersAndCountInChannel(channelId: String!): GetUsersAndCount!
   fetchAllChannelChats(channelId: String!, page: Float!): [ChannelChat!]!

@@ -63,10 +63,6 @@ export class ChannelService {
       .where('channel.id = :channelId', { channelId })
       .getOne();
 
-    // await this.channelChatRepository.createQueryBuilder('channelChat').innerJoin('channelChat.Channel', 'channel', 'channel.id = :channelId', {channelId})
-    // .where('channelChat.createdAt > :after', {after})
-    // .getCount()
-
     return await this.channelChatRepository.count({
       where: {
         Channel: channel,

@@ -1,4 +1,5 @@
 import { UseGuards } from '@nestjs/common';
+import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GqlAuthAccessGuard } from 'src/common/auth/gql-auth.guard';
 import { CurrentUser, ICurrentUser } from 'src/common/auth/gql-user.param';
@@ -10,11 +11,39 @@ import { ChannelChat } from './entities/channelChat.entity';
 
 @Resolver()
 export class ChannelResolver {
-  constructor(private readonly channelService: ChannelService) {}
+  constructor(
+    private readonly channelService: ChannelService,
+    private readonly elasticsearchService: ElasticsearchService,
+  ) {}
 
   @Query(() => [Channel])
   async fetchAllChannelsInServer(@Args('serverId') serverId: string) {
     return await this.channelService.getAllChannelsInServer(serverId);
+  }
+
+  @Query(() => [Channel])
+  async searchChannelsInServer(@Args('search') search: string) {
+    const result = await this.elasticsearchService.search({
+      index: 'channel',
+      from: 0,
+      size: 20,
+      query: {
+        multi_match: {
+          query: search,
+          fields: ['name', 'intro'],
+        },
+      },
+    });
+
+    console.log(JSON.stringify(result, null, ' '));
+
+    const channels = result.hits.hits.map((e: any) => ({
+      id: e._source.id,
+      name: e._source.name,
+      intro: e._source.intro,
+    }));
+
+    return channels;
   }
 
   @UseGuards(GqlAuthAccessGuard)
